@@ -1,4 +1,4 @@
-# FastTAPI-Channels
+# FastAPI-Channels
 
 <p align="center">
   <a href="https://python.org">
@@ -17,7 +17,6 @@
 # 案例演示
 
 ```python
-# -*- coding: utf-8 -*-
 # -*- coding: utf-8 -*-
 from contextlib import asynccontextmanager
 from typing import AsyncIterator
