@@ -1,10 +1,5 @@
 # -*- coding: utf-8 -*-
-# @Time    : 2024/10/29 19:38
-# @Author  : BXZDYG
-# @Software: PyCharm
-# @File    : setup
-# @Comment :
-import setuptools  # 导入setuptools打包工具
+import setuptools
 
 from fastapi_channels import __version__
 

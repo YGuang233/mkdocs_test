@@ -1,9 +1,4 @@
 # -*- coding: utf-8 -*-
-# @Time    : 2024/10/26 17:58
-# @Author  : BXZDYG
-# @Software: PyCharm
-# @File    : used
-# @Comment :
 from fastapi_channels.channels import Channel
 
 

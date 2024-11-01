@@ -1,29 +1,13 @@
 # -*- coding: utf-8 -*-
-# @Time    : 2024/10/26 17:41
-# @Author  : BXZDYG
-# @Software: PyCharm
-# @File    : types
-# @Comment : 类型定义
 from typing import (
     Any,
-    AsyncIterator,
     Callable,
-    # Coroutine,
     Dict,
-    List,
     Mapping,
-    Optional,
-    Sequence,
-    # Set,
-    # Tuple,
-    # Type,
     Union,
     TypeVar,
-    AsyncContextManager,
-    Generator
+    AsyncContextManager
 )
-# from starlette.websockets import WebSocketType
-
 _T = TypeVar("_T")
 WebSocketType = TypeVar("WebSocketType")
 ChannelName = TypeVar('ChannelName', bound=str)

@@ -9,7 +9,9 @@
   </a>
 </p>
 &nbsp;&nbsp;本项目主要为FastAPI的WebSocket接口通讯提供快捷方便的处理和管理库。特色在于少量代码就能实现基本的聊天室的功能。
+<br>
 &nbsp;&nbsp;本项目又集成了优秀的第三方库如:broadcaster、fastapi-limiter。在本项目均保留了自定义使用这些库的位置。
+<br>
 &nbsp;&nbsp;一般的，用户使用本库仅需考虑如何编写 `action` 来实现传输的目标,和对应的`action`访问的权限类即可
 
 # 案例演示
