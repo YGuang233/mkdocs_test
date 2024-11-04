@@ -107,7 +107,6 @@
             return;
           }
           var msg = struct.clone();
-          // msg.find('.time').text((new Date()).toLocaleTimeString());
           msg.find('.time').text((new Date()).toString("HH:mm:ss"));
           if (action == 'message') {
             var matches;
@@ -134,10 +133,9 @@
           var input = $message;
           var action = $action.val();
           var msg = input.val();
-          var currentName = $('#ask input#name').val(); // 获取最新的用户名
+          var currentName = $('#ask input#name').val();
           if (msg) {
             ws.send(JSON.stringify({ action: action, user: currentName, message: msg }));
-            // ws.send(JSON.stringify({ action: action, user: name, message: msg }));
           }
           input.val('');
         });

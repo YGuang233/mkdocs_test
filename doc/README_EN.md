@@ -246,7 +246,7 @@ if __name__ == "__main__":
     uvicorn.run(app, port=8000)
 
 ```
-The HTML template for the front end [is available here](https://github.com/YGuang233/fastapi-channels/example/templates/index.html), and is adapted from [Pieter Noordhuis's PUB/SUB demo](https://gist.github.com/pietern/348262) and [Tom Christie's Broadcaster demo](https://github.com/encode/broadcaster/blob/master/example/templates/index.html).
+The HTML template for the front end [is available here](https://github.com/YGuang233/fastapi-channels/blob/master/example/templates/index.html), and is adapted from [Pieter Noordhuis's PUB/SUB demo](https://gist.github.com/pietern/348262) and [Tom Christie's Broadcaster demo](https://github.com/encode/broadcaster/blob/master/example/templates/index.html).
 
 # Goal and Achieve
 

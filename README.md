@@ -236,7 +236,7 @@ if __name__ == "__main__":
     uvicorn.run(app, port=8000)
 
 ```
-前端的HTML模板[可在此处获得](https://github.com/YGuang233/fastapi-channels/example/templates/index.html)，改编自[Pieter Noordhuis的PUB/SUB演示](https://gist.github.com/pietern/348262)和[Tom Christie的Broadcaster演示](https://github.com/encode/broadcaster/blob/master/example/templates/index.html)
+前端的HTML模板[可在此处获得](https://github.com/YGuang233/fastapi-channels/blob/master/example/templates/index.html)，改编自[Pieter Noordhuis的PUB/SUB演示](https://gist.github.com/pietern/348262)和[Tom Christie的Broadcaster演示](https://github.com/encode/broadcaster/blob/master/example/templates/index.html)
 
 # 目标和实现
 
@@ -268,7 +268,7 @@ if __name__ == "__main__":
 - [ ] 测试环境搭建
 - [ ] 完善的doc
 - [ ] fastapi编写风格化(依赖项注入...)
-- 
+
 # 安装
 
 那么接下来就由你来使用fastapi-channels了
