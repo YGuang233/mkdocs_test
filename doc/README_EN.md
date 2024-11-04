@@ -9,26 +9,27 @@
   </a>
 </p>
 
-# 介绍
-[【中文文档】](./README.md) [【English Doc】](./doc/README_EN.md)
+# Introduction
+[【中文文档】](../README.md) [【English Doc】](./README_EN.md)
 
-&nbsp;&nbsp;本项目主要为FastAPI的WebSocket接口通讯提供快捷方便的处理和管理库。特色在于少量代码就能实现基本的聊天室的功能,和fastapi的编写风格。
+&nbsp;&nbsp;This project mainly provides a fast and convenient processing and management library for Web Socket interface communication of Fast API. The feature lies in the ability to implement basic chat room functions with a small amount of code, and the writing style of FastAPI.
 <br>
-&nbsp;&nbsp;本项目又集成了优秀的第三方库如:[broadcaster](https://github.com/encode/broadcaster)、[fastapi-limiter](https://github.com/long2ice/fastapi-limiter)。在本项目均保留了自定义使用这些库的位置。
+&nbsp;&nbsp;This project has also integrated excellent third-party libraries such as [broadcaster](https://github.com/encode/broadcaster) and [FastAPI limiter](https://github.com/long2ice/fastapi-limiter), and has reserved custom locations for using these libraries in this project.
 <br>
-&nbsp;&nbsp;一般的，用户使用本库仅需考虑如何编写 `action` 来实现传输的目标,和对应的`action`访问的权限类即可
+&nbsp;&nbsp;Generally, users only need to consider how to write 'actions' to achieve the transmission goals and the corresponding permission classes for accessing' actions' when using this library
 
-# 案例演示
+# Examples
 
 <img src="https://github.com/user-attachments/assets/593ba9c9-4b23-46bf-8697-bee953372010" alt='WebSockets Demo'>
 
 ```python
+# -*- coding: utf-8 -*-
 from typing import Type, Union, Any, Optional
 
-from fastapi import FastAPI, WebSocket
-from pydantic import BaseModel
 from starlette.requests import Request
 from starlette.templating import Jinja2Templates
+from fastapi import FastAPI, WebSocket
+from pydantic import BaseModel
 
 from fastapi_channels import add_channel
 from fastapi_channels.channels import BaseChannel, Channel
@@ -47,9 +48,10 @@ global_channels_details = {}
 
 
 def add_global_channels_details(
-        channel: Union[Type[BaseChannel], BaseChannel], name: str
+    channel: Union[Type[BaseChannel], BaseChannel], name: str
 ) -> tuple[BaseChannel, str]:
-    # 检查传入的是类还是实例,但是返回的都是实例对象，不做重复的实例化
+    # Check whether the input is a class or an instance,
+    # but return instance objects without repeating instantiation
     if isinstance(channel, type):
         instance = channel()
     else:
@@ -79,7 +81,6 @@ async def homepage(request: Request):
         context,
     )
 
-
 class ResponseModel(BaseModel):
     action: str
     user: str
@@ -90,7 +91,6 @@ class ResponseModel(BaseModel):
 
     def create(self):
         return self.model_dump_json(exclude_none=True)
-
 
 class BaselChatRoom(BaseChannel): ...
 
@@ -106,40 +106,48 @@ async def base_chatroom_ws(websocket: WebSocket):
 
 
 class PersonalChatRoom(PersonChannel):
+  
     @staticmethod
     async def encode_json(data: dict) -> str:
         return ResponseModel(**data).create()
-
-    @limiter(times=2, seconds=3000)  # 请求超额 但是不关闭websocket
-    @action("count")
+    
+    @limiter(times=2, seconds=3000)  # Request exceeded, but it will not close websocket
+    @action("count")  
     async def get_count(self, websocket: WebSocket, channel: str, data: dict, **kwargs):
         data.update({'message': await self.get_connection_count(channel)})
         await self.broadcast_to_personal(websocket, await self.encode(data))
 
-    @action("message")  # 广播消息
+
+    @action("message")  # broadcast message
     async def send_message(
-            self, websocket: WebSocket, channel: str, data: dict, **kwargs
+        self, websocket: WebSocket, channel: str, data: dict, **kwargs
     ):
         await self.broadcast_to_channel(channel, await self.encode(data))
 
-    @action(deprecated=True)  # action被废弃不关闭websocket
+    @action(
+        deprecated=True
+    )  # The action is discarded and returns a discarded message. It will not close the websocket
     async def deprecated_action(
-            self, websocket: WebSocket, channel: str, data: dict, **kwargs
+        self, websocket: WebSocket, channel: str, data: dict, **kwargs
     ):
-        data.update({"message": "发送消息"})
+        data.update({"message": "send message"})
         await self.broadcast_to_personal(websocket, self.encode(data))
 
-    @action("permission_denied", permission=False)  # 返回权限不足的错误响应
+    @action(
+        "permission_denied", permission=False
+    )  # return error response with insufficient permissions
     async def permission_false(
-            self, websocket: WebSocket, channel: str, data: dict, **kwargs
+        self, websocket: WebSocket, channel: str, data: dict, **kwargs
     ):
         await self.broadcast_to_channel(channel, self.encode(data))
 
-    @action(permission=AllowAny)  # 抛出异常不但关闭websocket
+    @action(
+        permission=AllowAny
+    )  # raise an exception not only closes websocket
     async def error(self, websocket: WebSocket, channel: str, data: dict, **kwargs):
         raise PermissionDenied(close=False)
 
-    @action()  # 客户端通过close的action可以主动关闭websocket连接
+    @action()  # The client can actively close the websocket connection through the close action
     async def close(self, websocket: WebSocket, channel: str, data: dict, **kwargs):
         await websocket.close()
 
@@ -159,7 +167,6 @@ class GroupChatRoom(GroupChannel):
     async def encode_json(data: dict) -> str:
         return ResponseModel(**data).create()
 
-
 group_chatroom = GroupChatRoom()
 group_chatroom_name = "chatroom_ws_group"
 
@@ -170,28 +177,30 @@ async def group_chatroom_ws(websocket: WebSocket):
 
 
 async def join_room(
-        websocket: WebSocket,
-        channel: str,
+    websocket: WebSocket,
+    channel: str,
 ):
     await group_chatroom.broadcast_to_personal(websocket, "Join successfully")
 
 
 async def leave_room(
-        websocket: WebSocket,
-        channel: str,
+    websocket: WebSocket,
+    channel: str,
 ):
-    # await group_chatroom.broadcast_to_personal(websocket, 'leave successfully')
-    # error: 👆如果通过action离开房间会输出这个，但是客户端直接关闭会诱发websocket没有进行连接
-    # 所以这一步只能`broadcast_to_channel`或者后续处理,而不是`broadcast_to_personal`
+    # error: 👆 If you leave the room through an `action`, it will output this,
+    # but if the client closes it directly, it will trigger the websocket to not connect,
+    # so this step can only be 'broadcast_to_channel' or processed later,
+    # rather than 'broadcast_to_personal'`
     await group_chatroom.broadcast_to_channel(channel, "leave successfully")
 
 
-# 以函数的形式注册加入房间和退出房间的操作是可以进行广播到频道中,像fastapi那样
+# The operation of registering and joining rooms and exiting rooms in 
+# the form of functions can be broadcasted to channels, similar to FastAPI
 group_chatroom.add_event_handler("join", join_room)
 group_chatroom.add_event_handler("leave", leave_room)
 
 
-# 而以类的形式通过异步上下文管理器来实现频道的周期却是不行的
+# However, implementing channel cycles through asynchronous context managers in the form of classes is not feasible
 # import contextlib
 # @contextlib.asynccontextmanager
 # async def lifespan(self, websocket: WebSocket, channel: str, ):
@@ -202,8 +211,9 @@ group_chatroom.add_event_handler("leave", leave_room)
 #     yield
 #     await person_chatroom.broadcast_to_channel(channel, 'leave successfully')
 # person_chatroom = PersonalChatRoom(lifespan=lifespan)
-# 因为这里的channel是在实例化后的`connect`中被传入的`，因为我将一些lifespan的操作放到了channel,有着极大的耦合，后续将解决这个问题
-
+# Because the channel here is passed in the 'connect' after instantiation, 
+# and because I placed some lifespan operations in the channel, it greatly couples.
+# I will solve this problem in the future
 
 @limiter(seconds=3, times=1)
 @group_chatroom.action("message")  # 消息发送解析和#装饰器异常
@@ -211,19 +221,19 @@ async def send_message(websocket: WebSocket, channel: str, data: dict, **kwargs)
     await group_chatroom.broadcast_to_channel(channel, await group_chatroom.encode(data))
 
 
-@group_chatroom.action("error_true")  # 触发异常，主机关闭连接
+@group_chatroom.action("error_true")  # Trigger exception, host close connection
 async def send_error_and_close(
-        websocket: WebSocket, channel: str, data: dict, **kwargs
+    websocket: WebSocket, channel: str, data: dict, **kwargs
 ):
     raise PermissionDenied(close=True)
 
 
-@group_chatroom.action("error_false")  # 消息发送解析和异常
+@group_chatroom.action("error_false")  # Trigger exception, host no close connection
 async def send_error(websocket: WebSocket, channel: str, data: dict, **kwargs):
     raise PermissionDenied(close=False)
 
 
-@group_chatroom.action()  # 客户端发通过`action`请求主机关闭连接
+@group_chatroom.action()  # The client sends an 'action' request to the host to close the connection
 async def close(websocket: WebSocket, channel: str, data: dict, **kwargs):
     await websocket.close()
 
@@ -236,42 +246,42 @@ if __name__ == "__main__":
     uvicorn.run(app, port=8000)
 
 ```
-前端的HTML模板[可在此处获得](https://github.com/YGuang233/fastapi-channels/example/templates/index.html)，改编自[Pieter Noordhuis的PUB/SUB演示](https://gist.github.com/pietern/348262)和[Tom Christie的Broadcaster演示](https://github.com/encode/broadcaster/blob/master/example/templates/index.html)
+The HTML template for the front end [is available here](https://github.com/YGuang233/fastapi-channels/example/templates/index.html), and is adapted from [Pieter Noordhuis's PUB/SUB demo](https://gist.github.com/pietern/348262) and [Tom Christie's Broadcaster demo](https://github.com/encode/broadcaster/blob/master/example/templates/index.html).
 
-# 目标和实现
+# Goal and Achieve
 
-- [x] 权限认证
-    - [x] 基础全局、频道权限认证
-    - [x] 访问`action`的权限验证
-    - [ ] 基础的用户验证的方案
-- [x] 自定义异常和全局捕获,并且抛出异常可控连接状态
-- [ ] 分页器
-- [x] 限流器
+- [x] Permission authentication
+    - [x] Basic global and channel permission authentication
+    - [x] Permission verification for accessing 'action'
+    - [ ] Basic user authentication scheme
+- [x] Customize exceptions and global capture, and throw exceptions to control connection status
+- [ ] Paginator
+- [x] Current limiter
     - [x] fastapi-limiter
-- [ ] 兼容多种请求类型的支持
+- [ ] Compatible with support for multiple request types
     - [ ] Text
     - [x] JSON
     - [ ] Binary
-- [x] 频道事件
-    - [x] 频道生命周期事件(lifespan、on_event)
-- [ ] 可自定义数据传输的结构
-    - [ ] 请求体
-    - [ ] 响应体
-    - [ ] 分页器
-- [ ] 持久化
-    - [ ] 历史记录的存储
-    - [ ] 历史记录的读取
-- [ ] 后台管理
-    - [ ] Api接口控制
-    - [ ] 定时管理
-- [ ] 国际化
-- [ ] 测试环境搭建
-- [ ] 完善的doc
-- [ ] fastapi编写风格化(依赖项注入...)
-- 
-# 安装
+- [x] Channel Events
+    - [x] Channel lifecycle event(lifespan、on_event)
+- [ ] Customizable data transmission structure
+    - [ ] Request Body
+    - [ ] Response body
+    - [ ] Paginator
+- [ ] Persistent
+    - [ ] Storage of historical records
+    - [ ] Reading of historical records
+- [ ] back-stage management
+    - [ ] API interface control
+    - [ ] Timed management
+- [ ] i18n
+- [ ] Test environment setup
+- [ ] Complete doc
+- [ ] FastAPI writing stylization (dependency injection...)
 
-那么接下来就由你来使用fastapi-channels了
+# Installation
+
+So now it's up to you to use fastapi-channels
 ```shell
 pip install fastapi-channels
 ```

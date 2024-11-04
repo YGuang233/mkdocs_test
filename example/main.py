@@ -1,34 +1,9 @@
-# FastAPI-Channels
-
-<p align="center">
-  <a href="https://python.org">
-    <img src="https://img.shields.io/badge/Python-3.8+-yellow?style=for-the-badge&logo=python&logoColor=white&labelColor=101010" alt="">
-  </a>
-  <a href="https://fastapi.tiangolo.com">
-    <img src="https://img.shields.io/badge/FastAPI-0.111.0-00a393?style=for-the-badge&logo=fastapi&logoColor=white&labelColor=101010" alt="">
-  </a>
-</p>
-
-# 介绍
-[【中文文档】](./README.md) [【English Doc】](./doc/README_EN.md)
-
-&nbsp;&nbsp;本项目主要为FastAPI的WebSocket接口通讯提供快捷方便的处理和管理库。特色在于少量代码就能实现基本的聊天室的功能,和fastapi的编写风格。
-<br>
-&nbsp;&nbsp;本项目又集成了优秀的第三方库如:[broadcaster](https://github.com/encode/broadcaster)、[fastapi-limiter](https://github.com/long2ice/fastapi-limiter)。在本项目均保留了自定义使用这些库的位置。
-<br>
-&nbsp;&nbsp;一般的，用户使用本库仅需考虑如何编写 `action` 来实现传输的目标,和对应的`action`访问的权限类即可
-
-# 案例演示
-
-<img src="https://github.com/user-attachments/assets/593ba9c9-4b23-46bf-8697-bee953372010" alt='WebSockets Demo'>
-
-```python
 from typing import Type, Union, Any, Optional
 
-from fastapi import FastAPI, WebSocket
-from pydantic import BaseModel
 from starlette.requests import Request
 from starlette.templating import Jinja2Templates
+from fastapi import FastAPI, WebSocket
+from pydantic import BaseModel
 
 from fastapi_channels import add_channel
 from fastapi_channels.channels import BaseChannel, Channel
@@ -234,44 +209,3 @@ if __name__ == "__main__":
     import uvicorn
 
     uvicorn.run(app, port=8000)
-
-```
-前端的HTML模板[可在此处获得](https://github.com/YGuang233/fastapi-channels/example/templates/index.html)，改编自[Pieter Noordhuis的PUB/SUB演示](https://gist.github.com/pietern/348262)和[Tom Christie的Broadcaster演示](https://github.com/encode/broadcaster/blob/master/example/templates/index.html)
-
-# 目标和实现
-
-- [x] 权限认证
-    - [x] 基础全局、频道权限认证
-    - [x] 访问`action`的权限验证
-    - [ ] 基础的用户验证的方案
-- [x] 自定义异常和全局捕获,并且抛出异常可控连接状态
-- [ ] 分页器
-- [x] 限流器
-    - [x] fastapi-limiter
-- [ ] 兼容多种请求类型的支持
-    - [ ] Text
-    - [x] JSON
-    - [ ] Binary
-- [x] 频道事件
-    - [x] 频道生命周期事件(lifespan、on_event)
-- [ ] 可自定义数据传输的结构
-    - [ ] 请求体
-    - [ ] 响应体
-    - [ ] 分页器
-- [ ] 持久化
-    - [ ] 历史记录的存储
-    - [ ] 历史记录的读取
-- [ ] 后台管理
-    - [ ] Api接口控制
-    - [ ] 定时管理
-- [ ] 国际化
-- [ ] 测试环境搭建
-- [ ] 完善的doc
-- [ ] fastapi编写风格化(依赖项注入...)
-- 
-# 安装
-
-那么接下来就由你来使用fastapi-channels了
-```shell
-pip install fastapi-channels
-```
