@@ -1,0 +1,367 @@
+<html>
+
+<head>
+  <script src='http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js'></script>
+  <script>
+    $(document).ready(function () {
+      var default_error_html = `<a id="close-btn">x</a> This browser has no native WebSocket support.<br/> Use a WebKit nightly or Google Chrome.`
+      var channels = {{ channels | tojson}};
+      var $message = $('#message');
+      var $action = $('#action');
+      var actions;
+      var ws;
+      if (typeof WebSocket != 'undefined') {
+        $('#ask').show();
+      } else {
+        $('#modal-overlay').show() // error
+      }
+
+      // join on enter
+      $('#ask input#name').keydown(function (event) {
+        if (event.keyCode == 13) {
+          $('#ask a').click();
+        }
+      });
+      // close on click
+      $(document).on('click', '#close-btn', function () {
+        $('#modal-overlay').hide();
+        $('#error').html(default_error_html);
+      });
+      // back on click
+      $('#back-btn').click(function () {
+        if (ws) {
+          ws.close();
+        }
+        $('#channel').hide();
+        $('#ask input#name').val('');
+        $('#ask').show();
+        $message.val('');
+        $('#msgs ul').children('li:not(:first)').remove();
+      });
+
+
+      // join on click
+      $('#ask a').click(function () {
+        var room_url = $('#ask select#room').val();
+        var room_name = $('#ask select#room option:selected').text();
+        actions = channels[room_name]['action'];
+
+        join($('#ask input#name').val(), room_url);
+        $('#ask').hide();
+        $('#channel').show();
+        if (channels[room_name]['room'] == 'channel') {
+          $message.css({
+            'width': '400px',
+            'font-size': '20pt'
+          });
+          $action.show()
+
+          $action.empty();
+
+          actions.forEach(function (action) {
+            $action.append($('<option>', {
+              value: action,
+              text: action.charAt(0).toUpperCase() + action.slice(1)
+            }));
+          });
+        } else {
+          $message.css({
+            'width': '600px',
+            'font-size': '30pt'
+          })
+          $action.hide();
+        }
+
+        $('input#message').focus();
+      });
+
+      function join(name, room_url) {
+        var host = window.location.host.split(':')[0];
+        ws = new WebSocket(room_url);
+
+        var container = $('div#msgs');
+        ws.onmessage = function (evt) {
+          var obj = JSON.parse(evt.data);
+          if (typeof obj != 'object') return;
+          if ('status' in obj) {
+            if (obj['status'] === 'bad') {
+              console.error(obj['errors']);
+              if (typeof obj['errors'] === 'string') {
+                $('#error').html('<a id="close-btn">x</a>' + obj['errors']);
+                $('#modal-overlay').show();
+              }
+            }
+          }
+          var action = obj['action'];
+          var struct = container.find('li.' + action + ':first');
+          if (actions.length > 0 && !actions.includes(action)) {
+            console.log("Could not handle: " + evt.data);
+            return;
+          }
+          if (action == 'count') {
+            alert(`current channel connection nums is ${obj['message']}`)
+            return;
+          }
+          if (struct.length < 1) {
+            console.log("html Could not handle: " + evt.data);
+            return;
+          }
+          var msg = struct.clone();
+          msg.find('.time').text((new Date()).toString("HH:mm:ss"));
+          if (action == 'message') {
+            var matches;
+            if (matches = obj['message'].match(/^\s*[\/\\]me\s(.*)/)) {
+              msg.find('.user').text(obj['user'] + ' ' + matches[1]);
+              msg.find('.user').css('font-weight', 'bold');
+            } else {
+              msg.find('.user').text(obj['user']);
+              msg.find('.message').text(': ' + obj['message']);
+            }
+          } else if (action == 'control') {
+            msg.find('.user').text(obj['user']);
+            msg.find('.message').text(obj['message']);
+            msg.addClass('control');
+          }
+
+          if (obj['user'] == name) msg.find('.user').addClass('self');
+          container.find('ul').append(msg.show());
+          container.scrollTop(container.find('ul').innerHeight());
+        }
+
+        $('#channel form').submit(function (event) {
+          event.preventDefault();
+          var input = $message;
+          var action = $action.val();
+          var msg = input.val();
+          var currentName = $('#ask input#name').val();
+          if (msg) {
+            ws.send(JSON.stringify({ action: action, user: currentName, message: msg }));
+          }
+          input.val('');
+        });
+      }
+    });
+  </script>
+  <style type="text/css" media="screen">
+    * {
+      font-family: Georgia;
+    }
+
+    a {
+      color: #000;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    #modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+    }
+
+    div.bordered {
+      margin: 100px auto 0;
+      width: 600px;
+      padding: 20px;
+      text-align: center;
+      border: 10px solid #ddd;
+      border-radius: 20px;
+    }
+
+    #error {
+      background-color: #BA0000;
+      color: #fff;
+      font-weight: bold;
+      word-wrap: break-word;
+    }
+
+    #close-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      cursor: pointer;
+      font-size: 40px;
+      color: #fff;
+      background: none;
+      border: none;
+      text-decoration: none;
+    }
+
+    #close-btn:hover {
+      color: #ffaa00;
+    }
+
+    #back-btn {
+      padding: 5px 15px;
+      background-color: #009485;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      text-decoration: none;
+      font-weight: bold;
+      text-align: left;
+    }
+
+    #back-btn:hover {
+      background-color: #ffaa00;
+    }
+
+    #ask {
+      font-size: 20pt;
+    }
+
+    #ask div {
+      margin-bottom: 15px;
+    }
+
+    #ask input,
+    #ask select {
+      font-size: 20pt;
+      padding: 10px;
+      margin: 0 10px;
+      width: 60%;
+    }
+
+    #ask span.join {
+      padding: 10px;
+      background-color: #ddd;
+      -webkit-border-radius: 10px;
+    }
+
+    #channel {
+      margin-top: 100px;
+      height: 480px;
+      position: relative;
+    }
+
+    #channel div#descr {
+      position: absolute;
+      left: -10px;
+      top: -190px;
+      font-size: 13px;
+      text-align: left;
+      line-height: 20px;
+      padding: 5px;
+      width: 630px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    #channel div#descr p {
+      margin: 0;
+    }
+
+    div#msgs {
+      overflow-y: scroll;
+      height: 400px;
+    }
+
+    div#msgs ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      text-align: left;
+    }
+
+    div#msgs li {
+      line-height: 20px;
+    }
+
+    div#msgs li span.user {
+      color: #ff9900;
+    }
+
+    div#msgs li span.user.self {
+      color: #aa2211;
+    }
+
+    div#msgs li span.time {
+      float: right;
+      margin-right: 5px;
+      color: #aaa;
+      font-family: "Courier New";
+      font-size: 12px;
+    }
+
+    div#msgs li.control {
+      text-align: center;
+    }
+
+    div#msgs li.control span.message {
+      color: #aaa;
+    }
+
+    div#input {
+      text-align: left;
+      margin-top: 20px;
+    }
+
+    div#input #message {
+      width: 400px;
+      border: 5px solid #bbb;
+      -webkit-border-radius: 3px;
+      font-size: 20pt;
+    }
+
+    div#input #action {
+      font-size: 20pt;
+      width: 180px;
+      margin-left: 10px;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="modal-overlay" style="display: none;">
+    <div id="error" class="bordered">
+      <a id="close-btn">x</a>
+      This browser has no native WebSocket support.<br />
+      Use a WebKit nightly or Google Chrome.
+    </div>
+  </div>
+  <div id="ask" class="bordered" style="display: none;">
+    <div>Name: <input type="text" id="name" /></div>
+    <div>Room: <select id="room">
+        {% for channel_name, details in channels.items() %}
+        <option value="{{ url_for(details['name']) }}">{{ channel_name }}</option>
+        {% endfor %}
+      </select></div>
+    <a href="#"><span class="join">Join!</span></a>
+  </div>
+  <div id="channel" class="bordered" style="display: none;">
+    <div id="descr" class="bordered">
+      <p><strong>Tip:</strong> Open up another browser window to chat.</p>
+      <a id="back-btn">← Back</a>
+    </div>
+    <div id="msgs">
+      <ul>
+        <li class="message" style="display: none">
+          <span class="user"></span><span class="message"></span>
+          <span class="time"></span>
+        </li>
+      </ul>
+    </div>
+    <div id="input">
+      <form>
+        <input type="text" id="message" />
+        <select id="action" style="display: none">
+          <option value="message">Message</option>
+        </select>
+      </form>
+    </div>
+  </div>
+</body>
+
+</html>

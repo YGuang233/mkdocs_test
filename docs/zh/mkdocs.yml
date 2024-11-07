@@ -1,0 +1,215 @@
+INHERIT: ../zh/mkdocs.maybe-insiders.yml
+site_name: FastAP-Channels
+site_description: A FastAPI based websocket library - FastAPI-Channels
+site_url: https://fc.bxzdyg.cn
+site_author: BXZDYG
+theme:
+  name: material # mkdocs, readthedocs, material
+  font:
+    text: Merriweather Sans # 字体样式
+    code: Red Hat Mono # Roboto Mono # 代码字体样式
+  # palette: 
+  #   # Light Model
+  #   - scheme: default # default、slate
+  #     toggle:
+  #       icon: material/weather-sunny
+  #       name: Light mode
+  #     primary: pink # link链接hover
+  #     accent: light blue
+  #   # Dark Model
+  #   - scheme: slate # default、slate
+  #     toggle:
+  #       icon: material/weather-night
+  #       name: Dark mode
+  #     primary: indigo # link链接hover
+  #     accent: light blue
+  palette:
+  - media: "(prefers-color-scheme)"
+    toggle:
+      icon: material/lightbulb-auto
+      name: Switch to light mode
+  - media: '(prefers-color-scheme: light)'
+    scheme: default
+    primary: teal
+    accent: amber
+    toggle:
+      icon: material/lightbulb
+      name: Switch to dark mode
+  - media: '(prefers-color-scheme: dark)'
+    scheme: slate
+    primary: teal
+    accent: amber
+    toggle:
+      icon: material/lightbulb-outline
+      name: Switch to system preference
+  features:
+    - content.code.annotate
+    - content.code.copy
+    # - content.code.select
+    - content.footnote.tooltips
+    - content.tabs.link
+    - content.tooltips
+    - navigation.footer
+    - navigation.indexes
+    - navigation.instant # 在front matter中设置隐藏导航或目录 ```--- hide: - nav \n igation - toc ---``` \n为换行
+    - navigation.instant.prefetch
+    # - navigation.instant.preview # 在写入时预览
+    # - navigation.sections # sections的形式，也就是排出一排没有缩进，级别高的文件目录黑色加粗，
+    #                         不使用就是有层次缩进的那一种 #而且这样些子文件的一个文件集合集合名词就很占位置和碍眼
+    # - toc.integrate # 导航集成。右边的文档中的层级和并到左边的文件目录层级里面去
+    # - navigation.expand # 默认展开所有可折叠的层级
+    - navigation.instant.progress
+    - navigation.path
+    - navigation.tabs # 导航栏功能
+    # - navigation.tabs.sticky # 导航栏固定，下滑不会隐藏
+    - navigation.top # 回到顶部
+    - navigation.tracking # 锚点追踪，点击跳转
+    - search.highlight
+    - search.share # 搜索分享
+    - search.suggest
+    - toc.follow # 锚点跟随 当前位置
+    # - header.autohide # 往下滑带有仓库的header将彻底隐藏
+    - announce.dismiss # 顶部公告栏多一个关闭的按钮，关掉后不再显示
+  icon: 
+    repo: fontawesome/brands/github-alt
+  # 两种方式指定logo
+  # icon:
+  #   logo: fontawesome/solid/w
+  # logo: ../zh/docs/img/icon-white.svg
+  # favicon: ../zh/docs/img/favicon.png
+  logo: img/icon-white.svg
+  favicon: img/favicon.png # 为什么上面的不行
+  language: zh
+  custom_dir: ../zh/overrides  # 自定义覆盖原代码 # 继承后通过../zh/*指向在zh的文件
+repo_name: fastapi-channels
+repo_url: https://github.com/YGuang233/fastapi-channels
+markdown_extensions:  # 扩展支持
+  - abbr
+  - attr_list
+  - pymdownx.emoji: # emoji表情 
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - pymdownx.highlight:
+      line_spans: __span
+      # anchor_linenums: true #不清楚下面三个有什么用
+      # pygments_lang_class: true
+      # use_pygments: true
+      # linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences:
+      custom_fences:
+          - name: mermaid
+            class: mermaid
+            format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tabbed:
+      alternate_style: true
+  - admonition  # 告诫
+  - pymdownx.details # !!!换成???告诫框就可以收缩 默认关闭 告诫类型后面使用`+`就是默认打开
+  # Other extensions
+  - mdx_include: # 代码文档分离的关键
+plugins:
+  # - mike: # 多版本文件
+  #   alias_type: symlink
+  #   canonical_version: latest
+  - git-revision-date-localized:
+      type: date
+      enable_creation_date: true
+  - git-committers:
+      repository: YGuang233/fastapi-channels
+      branch: master # 文档贡献人员，估计要先pull上去才行
+  - search
+nav:
+  - 主页:
+    - index.md
+  - 特点: features.md
+  - 学习:
+    - learn/index.md
+    - learn/setup.md
+    - action:
+      - learn/action.md
+      - learn/limiter.md
+  - 开发者: people.md
+  - 参考:
+    - resources/index.md
+  - 关于: 
+    - about/index.md
+  - 发行说明: release-notes.md
+
+  # - Home: index.md
+  # - Features: features.md
+  # - Learn:
+  #   - learn/index.md
+  # - Reference (Code API):
+  #   - reference/index.md
+  # - People: people.md
+  # - Resources:
+  #   - resources/index.md
+  # - About:
+  #   - about/index.md
+  # - Release: release-notes.md
+extra:
+  analytics: 
+    provider: google
+    property: G-RMREXXKJEQ
+    feedback:
+      title: 这个页面对你是否有帮助
+      ratings:
+        - icon: material/emoticon-happy-outline
+          name: 这个页面很有帮助
+          data: 1
+          note: >-
+            感谢你的反馈!
+        - icon: material/emoticon-sad-outline
+          name: 此页面有待改进
+          data: 0
+          note: >- 
+            感谢您的反馈！使用我们的<a href="..." target="_blank" rel="noopener">反馈表</a>.帮助我们改进此页面
+  social: # 社交
+    - icon: fontawesome/brands/github-alt
+      link: https://github.com/yang
+    - icon: fontawesome/brands/discord
+      link: https://discord.gg/VQjSZaeJmf
+    - icon: fontawesome/brands/twitter
+      link: https://twitter.com/fastapi
+    - icon: fontawesome/brands/linkedin
+      link: https://www.linkedin.com/in/tiangolo
+    - icon: fontawesome/brands/dev
+      link: https://dev.to/tiangolo
+    - icon: fontawesome/brands/medium
+      link: https://medium.com/@tiangolo
+    - icon: fontawesome/solid/globe
+      link: https://blog.bxzdyg.cn
+  # version: # 文档版本
+  #   provider: mike
+  #   alias: true
+  alternate: # 国际化
+    - link: /
+      name: zh - 简体中文
+      lang: zh
+    - link: /zh-hant/
+      name: zh-hant - 繁體中文
+      lang: zh_hant
+    - link: /en/
+      name: en - English
+      lang: en
+  # consent:
+  #   title: Cookie consent
+  #   description: >- 
+  #     We use cookies to recognize your repeated visits and preferences, as well
+  #     as to measure the effectiveness of our documentation and whether users
+  #     find what they're searching for. With your consent, you're helping us to
+  #     make our documentation better.
+extra_css:
+  - css/termynal.css
+  - css/custom.css
+
+extra_javascript:
+  - js/termynal.js
+  - js/custom.js
+  - js/fluff.js # 为什么下面的不行
+  # - ../zh/docs/js/fluff.js
+copyright: Copyright &copy; 2024 BXZDYG
+
+hooks:
+  - ../../scripts/mkdocs_hooks.py
