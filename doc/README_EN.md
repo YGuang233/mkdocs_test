@@ -212,7 +212,7 @@ group_chatroom.add_event_handler("leave", leave_room)
 #     await person_chatroom.broadcast_to_channel(channel, 'leave successfully')
 # person_chatroom = PersonalChatRoom(lifespan=lifespan)
 # Because the channel here is passed in the 'connect' after instantiation, 
-# and because I placed some lifespan operations in the channel, it greatly couples.
+# I have placed some lifespan operations in the channel, which has a great coupling. 
 # I will solve this problem in the future
 
 @limiter(seconds=3, times=1)

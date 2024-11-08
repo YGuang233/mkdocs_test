@@ -1,17 +1,179 @@
 # -*- coding: utf-8 -*-
+from enum import Enum
 from functools import wraps
-from typing import Optional, Any
+from typing import Dict, List, Optional, Any, Annotated, Sequence, Union
+
+from fastapi import Response
+from fastapi import params
+from fastapi.datastructures import Default
+from fastapi.params import Depends
+from fastapi.types import IncEx,DecoratedCallable
+from typing_extensions import Doc  # noqa
 
 from fastapi_channels.exceptions import ActionIsDeprecated
 from fastapi_channels.permission import BasePermission
-from fastapi_channels.types import DecoratedCallable
 
 
 def action(
-        name: Optional[str] = None,
+        name: Optional[str] = None, #类似 path
+        *,
         permission: Optional[Any] = None,
         detached: bool = False,
-        deprecated: bool = False,
+        response_model: Annotated[
+            Any,
+            Doc(
+                """
+                """
+            ),
+        ] = Default(None),
+        status_code: Annotated[
+            Optional[int],
+            Doc(
+                """
+                """
+            ),
+        ] = None,
+        tags: Annotated[
+            Optional[List[Union[str, Enum]]],
+            Doc(
+                """
+                """
+            ),
+        ] = None,
+        dependencies: Annotated[
+            Optional[Sequence[params.Depends]],
+            Doc(
+                """
+                """
+            ),
+        ] = None,
+        summary: Annotated[
+            Optional[str],
+            Doc(
+                """
+                """
+            ),
+        ] = None,
+        description: Annotated[
+            Optional[str],
+            Doc(
+                """
+                """
+            ),
+        ] = None,
+        response_description: Annotated[
+            str,
+            Doc(
+                """
+                """
+            ),
+        ] = "Successful Response",
+        responses: Annotated[
+            Optional[Dict[Union[int, str], Dict[str, Any]]],
+            Doc(
+                """
+                """
+            ),
+        ] = None,
+        deprecated: Annotated[
+            Optional[bool],
+            Doc(
+                """
+                """
+            ),
+        ] = None,
+        operation_id: Annotated[
+            Optional[str],
+            Doc(
+                """
+                """
+            ),
+        ] = None,
+        response_model_include: Annotated[
+            Optional[IncEx],
+            Doc(
+                """
+                """
+            ),
+        ] = None,
+        response_model_exclude: Annotated[
+            Optional[IncEx],
+            Doc(
+                """
+                """
+            ),
+        ] = None,
+        response_model_by_alias: Annotated[
+            bool,
+            Doc(
+                """
+                """
+            ),
+        ] = True,
+        response_model_exclude_unset: Annotated[
+            bool,
+            Doc(
+                """
+                """
+            ),
+        ] = False,
+        response_model_exclude_defaults: Annotated[
+            bool,
+            Doc(
+                """
+                """
+            ),
+        ] = False,
+        response_model_exclude_none: Annotated[
+            bool,
+            Doc(
+                """
+                """
+            ),
+        ] = False,
+        include_in_schema: Annotated[
+            bool,
+            Doc(
+                """
+                """
+            ),
+        ] = True,
+        response_class: Annotated[
+            Type[Response],
+            Doc(
+                """
+                """
+            ),
+        ] = Default(JSONResponse),
+        name: Annotated[ # 这个name是可以用作jinja url_for{}的
+            Optional[str],
+            Doc(
+                """
+                """
+            ),
+        ] = None,
+        callbacks: Annotated[
+            Optional[List[BaseRoute]],
+            Doc(
+                """
+                """
+            ),
+        ] = None,
+        openapi_extra: Annotated[
+            Optional[Dict[str, Any]],
+            Doc(
+                """
+                """
+            ),
+        ] = None,
+        generate_unique_id_function: Annotated[
+            Callable[[APIRoute], str],
+            Doc(
+                """
+                """
+            ),
+        ] = Default(generate_unique_id),
+        
 ) -> DecoratedCallable:
     if detached:
         raise NotImplementedError(

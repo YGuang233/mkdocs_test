@@ -144,3 +144,29 @@ class ChannelLifespanEvent:
         await self.join(websocket, channel)
         yield
         await self.leave(websocket, channel)
+
+    # async def lifespan(self, websocket: WebSocket, channel: str) -> None:
+    #     """
+    #     Handle fastapi-channels channel lifespan messages, which allows us to manage application
+    #     join and leave events.
+    #     """
+    #     print(websocket, channel)
+    #     joined = False  # 是否执行join函数
+    #     kwargs = {
+    #         'websocket': websocket,
+    #         'channel': channel,
+    #     }
+    #     # 默认如果是中间部分错误的话，结束不会被运行，除非你捕获了lifespan中的异常并使用finally的语句指定代码
+    #     try:
+    #         async with self.lifespan_context(websocket, channel):
+    #             joined = True
+    #             await self._handle(type="lifespan.join.complete", **kwargs)
+    #     except BaseException:
+    #         exc_text = traceback.format_exc()
+    #         if joined:
+    #             await self._handle(type="lifespan.leave.failed", message=exc_text, **kwargs)
+    #         else:
+    #             await self._handle(type="lifespan.join.failed", message=exc_text, **kwargs)
+    #         raise
+    #     else:
+    #         await self._handle(type="lifespan.leave.complete", **kwargs)

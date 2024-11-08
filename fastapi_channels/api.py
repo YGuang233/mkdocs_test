@@ -16,7 +16,7 @@ ParentT = TypeVar("ParentT", APIRouter, FastAPI)
 def add_channel(
         parent: ParentT,
         *,
-        debug: bool = True,
+        debug: bool = False,
         add_exception_handlers: bool = True,
         # init
         url: Optional[str] = None,
@@ -51,6 +51,7 @@ def add_channel(
         # 在原有的生命周期的基础上又追加了自己的生命周期 # 合并原来的生命周期
         try:
             await FastAPIChannel.init(
+                # debug=debug,
                 url=url,
                 backend=backend,
                 broadcast=broadcast,

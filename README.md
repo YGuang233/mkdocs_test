@@ -202,7 +202,8 @@ group_chatroom.add_event_handler("leave", leave_room)
 #     yield
 #     await person_chatroom.broadcast_to_channel(channel, 'leave successfully')
 # person_chatroom = PersonalChatRoom(lifespan=lifespan)
-# 因为这里的channel是在实例化后的`connect`中被传入的`，因为我将一些lifespan的操作放到了channel,有着极大的耦合，后续将解决这个问题
+# 因为这里的channel是在实例化后的`connect`中被传入的`
+# 我将一些lifespan的操作放到了channel,这有着极大的耦合，后续将解决这个问题
 
 
 @limiter(seconds=3, times=1)

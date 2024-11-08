@@ -18,4 +18,3 @@ Lifespan = Union[ChannellessLifespan[WebSocketType, ChannelName], ChannelfulLife
 Scope = Dict[str, Any]
 Receive = Callable[[], Any]
 Send = Callable[[Dict[str, Any]], Any]
-DecoratedCallable = TypeVar("DecoratedCallable", bound=Callable[..., Any])
