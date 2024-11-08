@@ -1,0 +1,3 @@
+.github/workflows/build-docs.yml
+.github/workflows/deploy-docs.yml
+venv/
