@@ -33,7 +33,6 @@ jobs:
             - docs/**
             - docs_src/**
             - requirements-docs.txt
-            - requirements-docs-insiders.txt
             - pyproject.toml
             - mkdocs.yml
             - mkdocs.insiders.yml
@@ -41,6 +40,7 @@ jobs:
             - mkdocs.no-insiders.yml
             - .github/workflows/build-docs.yml
             - .github/workflows/deploy-docs.yml
+      # - requirements-docs-insiders.txt
   langs:
     needs:
       - changes
@@ -65,13 +65,13 @@ jobs:
         run: uv pip install -r requirements-docs.txt
       # Install MkDocs Material Insiders here just to put it in the cache for the rest of the steps
       # 在此处安装 MkDocs Material Insiders，只是为了将其放入其余步骤的缓存中
-      - name: Install Material for MkDocs Insiders
-        if: ( github.event_name != 'pull_request' || github.secret_source == 'Actions' )
-        run: uv pip install -r requirements-docs-insiders.txt
-        env:
-          TOKEN: ${{ secrets.FASTAPI_MKDOCS_MATERIAL_INSIDERS }}
-      - name: Verify Docs
-        run: python ./scripts/docs.py verify-docs
+      # - name: Install Material for MkDocs Insiders
+      #   if: ( github.event_name != 'pull_request' || github.secret_source == 'Actions' )
+      #   run: uv pip install -r requirements-docs-insiders.txt
+      #   env:
+      #     TOKEN: ${{ secrets.FASTAPI_MKDOCS_MATERIAL_INSIDERS }}
+      # - name: Verify Docs
+      #   run: python ./scripts/docs.py verify-docs
       - name: Export Language Codes
         id: show-langs
         run: |
@@ -106,11 +106,11 @@ jobs:
             pyproject.toml
       - name: Install docs extras
         run: uv pip install -r requirements-docs.txt
-      - name: Install Material for MkDocs Insiders
-        if: ( github.event_name != 'pull_request' || github.secret_source == 'Actions' )
-        run: uv pip install -r requirements-docs-insiders.txt
-        env:
-          TOKEN: ${{ secrets.FASTAPI_MKDOCS_MATERIAL_INSIDERS }}
+      # - name: Install Material for MkDocs Insiders
+      #   if: ( github.event_name != 'pull_request' || github.secret_source == 'Actions' )
+      #   run: uv pip install -r requirements-docs-insiders.txt
+      #   env:
+      #     TOKEN: ${{ secrets.FASTAPI_MKDOCS_MATERIAL_INSIDERS }}
       - name: Update Languages
         run: python ./scripts/docs.py update-languages
       - uses: actions/cache@v4

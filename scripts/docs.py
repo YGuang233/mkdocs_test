@@ -1,4 +1,4 @@
-# d:/Desktop/only_fastapi/venv/Scripts/python.exe d:/Desktop/only_fastapi/fastapi/scripts/docs.py --hlep
+# E:/波/MD笔记/FastAPI/new/fastapi-channels/venv/Scripts/python.exe E:/波/MD笔记/FastAPI/new/fastapi-channels/scripts/docs.py --help
 import json
 import logging
 import os
@@ -42,7 +42,7 @@ docs_path = Path("docs")
 zh_docs_path = Path("docs/zh")
 zh_config_path: Path = zh_docs_path / mkdocs_name
 site_path = Path("site").absolute()
-build_site_path = Path("site_build").absolute()
+build_site_path = Path("site_build").absolute() # 这个之后得改成根据一个版本修改的
 
 
 @lru_cache
@@ -112,6 +112,7 @@ def build_lang(
 ) -> None:
     """
     Build the docs for a language.
+    : 生成一种语言的文档。build-all的单个任务
     """
     insiders_env_file = os.environ.get("INSIDERS_FILE")
     print(f"Insiders file {insiders_env_file}")
@@ -186,10 +187,11 @@ def generate_readme_content() -> str:
     return content
 
 
-@app.command()
+# @app.command()
 def generate_readme() -> None:
     """
     Generate README.md content from main index.md
+    : 从主index.md生成README.md内容
     """
     typer.echo("Generating README")
     readme_path = Path("README.md")
@@ -197,10 +199,11 @@ def generate_readme() -> None:
     readme_path.write_text(new_content, encoding="utf-8")
 
 
-@app.command()
+# @app.command()
 def verify_readme() -> None:
     """
     Verify README.md content from main index.md
+    : 验证主index.md中的README.md内容
     """
     typer.echo("Verifying README")
     readme_path = Path("README.md")
@@ -217,8 +220,10 @@ def verify_readme() -> None:
 @app.command()
 def build_all() -> None:
     """
-    Build mkdocs site for en, and then build each language inside, end result is located
+    Build mkdocs site for zh, and then build each language inside, end result is located
     at directory ./site/ with each language inside.
+    : 为zh构建mkdocs站点，然后在内部构建每种语言，最终结果位于
+    在目录中。/site/里面的每种语言。
     """
     update_languages()
     shutil.rmtree(site_path, ignore_errors=True)
@@ -234,6 +239,7 @@ def build_all() -> None:
 def update_languages() -> None:
     """
     Update the mkdocs.yml file Languages section including all the available languages.
+    : 更新mkdocs.yml文件语言部分，包括所有可用的语言。 只保留有用到的yaml数据信息
     """
     update_config()
 
@@ -248,6 +254,7 @@ def serve() -> None:
     This is here only to preview a site with translations already built.
 
     Make sure you run the build-all command first.
+    : 在build-all-langs后启动预览服务
     """
     typer.echo("Warning: this is a very simple server.")
     typer.echo("For development, use the command live instead.")
@@ -332,6 +339,7 @@ def update_config() -> None:
 def verify_config() -> None:
     """
     Verify main mkdocs.yml content to make sure it uses the latest language names.
+    : 验证主要的mkdocs.yml内容，以确保它使用最新的语言名称。
     """
     typer.echo("Verifying mkdocs.yml")
     config = get_zh_config()
@@ -347,10 +355,11 @@ def verify_config() -> None:
     typer.echo("Valid mkdocs.yml ✅")
 
 
-@app.command()
+# @app.command()
 def verify_non_translated() -> None:
     """
     Verify there are no files in the non translatable pages.
+    : 验证不（允许）可翻译的页面中没有被翻译. 备注：non_translated_sections中是不需要被翻译的文件因为时常变动
     """
     print("Verifying non translated pages")
     lang_paths = get_lang_paths()
@@ -370,7 +379,7 @@ def verify_non_translated() -> None:
     print("No non-translated pages found ✅")
 
 
-@app.command()
+# @app.command()
 def verify_docs():
     verify_readme()
     verify_config()
@@ -379,6 +388,10 @@ def verify_docs():
 
 @app.command()
 def langs_json():
+    """
+    Output the existing translation language
+    : 输出已有的翻译语种
+    """
     langs = []
     for lang_path in get_lang_paths():
         if lang_path.is_dir():
