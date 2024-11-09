@@ -57,10 +57,11 @@ jobs:
           run-id: ${{ github.event.workflow_run.id }}
       - name: Deploy to Cloudflare Pages
         # hashFiles returns an empty string if there are no files
+        # 如果没有文件，则hashFiles返回空字符串
         if: hashFiles('./site/*')
         id: deploy
         env:
-          PROJECT_NAME: fastapitiangolo
+          PROJECT_NAME: mkdocs-test
           BRANCH: ${{ ( github.event.workflow_run.head_repository.full_name == github.repository && github.event.workflow_run.head_branch == 'master' && 'main' ) || ( github.event.workflow_run.head_sha ) }}
         # TODO: Use v3 when it's fixed, probably in v3.11
         # https://github.com/cloudflare/wrangler-action/issues/307

@@ -7,6 +7,9 @@ on:
     types:
       - opened
       - synchronize
+# "Build Docs" 工作流：
+# 触发条件：当推送到 master 分支或有新的 pull request（打开或同步）时触发。
+# 主要步骤：检查文档相关文件的变更，构建文档，并上传构建产物作为 artifact。
 
 env:
   UV_SYSTEM_PYTHON: 1
