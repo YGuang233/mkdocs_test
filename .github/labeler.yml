@@ -30,8 +30,8 @@ internal:
         - .pre-commit-config.yaml
         - pdm_build.py
         - requirements*.txt
-        - docs/zh/data/sponsors.yml
         - docs/zh/overrides/main.html
+        # - docs/zh/data/sponsors.yml
       - all-globs-to-all-files:
         - '!docs/*/docs/**'
         - '!fastapi_channels/**'

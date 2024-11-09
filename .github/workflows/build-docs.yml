@@ -8,7 +8,7 @@ on:
       - opened
       - synchronize
 # "Build Docs" 工作流：
-# 触发条件：当推送到 master 分支或有新的 pull request（打开或同步）时触发。
+# 触发条件：当推送到 master 分支或有新的 pull request（打开或同步）时触发。但是在CF上进行绑定后，及时不满前面两个条件也会重新部署
 # 主要步骤：检查文档相关文件的变更，构建文档，并上传构建产物作为 artifact。
 
 env:
