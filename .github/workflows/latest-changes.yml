@@ -1,9 +1,8 @@
 name: Latest Changes
-
 on:
   pull_request_target:
     branches:
-      - master
+      - docs
     types:
       - closed
   workflow_dispatch:
