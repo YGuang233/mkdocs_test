@@ -3,6 +3,6 @@ hide:
   - navigation
 ---
 
-# 发行说明
+## 发行说明
 
-## Latest Changes
+### Latest Changes
