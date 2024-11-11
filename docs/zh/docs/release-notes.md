@@ -1,4 +1,6 @@
-# 发行说明
+---
+hide:
+  - navigation
+---
 
-一些历史记录
-release-notes.md
+# 发行说明

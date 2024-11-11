@@ -49,20 +49,7 @@ FastAPI 是一个用于构建 API 的现代、快速（高性能）的 web 框�
 
 <small>* 根据对某个构建线上应用的内部开发团队所进行的测试估算得出。</small>
 
-## Sponsors
 
-<!-- sponsors -->
-
-{% if sponsors %}
-{% for sponsor in sponsors.gold -%}
-<a href="{{ sponsor.url }}" target="_blank" title="{{ sponsor.title }}"><img src="{{ sponsor.img }}" style="border-radius:15px"></a>
-{% endfor -%}
-{%- for sponsor in sponsors.silver -%}
-<a href="{{ sponsor.url }}" target="_blank" title="{{ sponsor.title }}"><img src="{{ sponsor.img }}" style="border-radius:15px"></a>
-{% endfor %}
-{% endif %}
-
-<!-- /sponsors -->
 
 <a href="https://fastapi.tiangolo.com/fastapi-people/#sponsors" class="external-link" target="_blank">Other sponsors</a>
 

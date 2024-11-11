@@ -97,7 +97,6 @@ def main():
         message += "\n\n### Modified Pages\n\n"
         message += "\n".join([f"* {link}" for link in links])
 
-    print(message)
     use_pr.as_issue().create_comment(message)
 
     logging.info("Finished")

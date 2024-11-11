@@ -1,8 +1,7 @@
-# E:/波/MD笔记/FastAPI/new/fastapi-channels/venv/Scripts/python.exe E:/波/MD笔记/FastAPI/new/fastapi-channels/scripts/docs.py --help
+# python  .\scripts\docs.py --help
 import json
 import logging
 import os
-import re
 import shutil
 import subprocess
 from functools import lru_cache
@@ -15,7 +14,6 @@ from typing import Any, Dict, List, Optional, Union
 import mkdocs.utils
 import typer
 import yaml
-from jinja2 import Template
 from ruff.__main__ import find_ruff_bin
 
 logging.basicConfig(level=logging.INFO)
@@ -31,7 +29,7 @@ missing_translation_snippet = """
 non_translated_sections = [
     "reference/",
     "release-notes.md",
-    "fastapi-people.md",
+    "dev-people.md",
     "external-links.md",
     "newsletter.md",
     "management-tasks.md",
@@ -42,7 +40,7 @@ docs_path = Path("docs")
 zh_docs_path = Path("docs/zh")
 zh_config_path: Path = zh_docs_path / mkdocs_name
 site_path = Path("site").absolute()
-build_site_path = Path("site_build").absolute() # 这个之后得改成根据一个版本修改的
+build_site_path = Path("site_build").absolute()  # 这个之后得改成根据一个版本修改的
 
 
 @lru_cache
@@ -322,7 +320,7 @@ def get_updated_config_content() -> Dict[str, Any]:
             raise typer.Abort()
         use_name = f"{code} - {local_language_names[code]}"
         new_alternate.append({"link": url, "name": use_name})
-    new_alternate.append({"link": "/em/", "name": "😉"})
+    # new_alternate.append({"link": "/em/", "name": "😉"})
     config["extra"]["alternate"] = new_alternate
     return config
 

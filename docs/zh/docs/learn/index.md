@@ -12,7 +12,7 @@ comments: true
 ```
 
 ```python
-{!> ../../docs_src/dependencies/tutorial006.py!}
+{!> ../../docs_src/dependencies/tutorial007.py!}
 ```
 
 ```python hl_lines="13 15 22 25"

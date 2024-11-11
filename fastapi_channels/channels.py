@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 import asyncio
 import json
 import traceback
@@ -11,8 +10,8 @@ from typing import (
     List,
     Optional,
     Sequence,
-    Union,
     Tuple,
+    Union,
     cast,
 )
 from urllib.parse import urlparse
@@ -20,6 +19,7 @@ from urllib.parse import urlparse
 import anyio
 from broadcaster import Broadcast, BroadcastBackend
 from fastapi.params import Depends
+from fastapi.types import DecoratedCallable
 from fastapi_limiter import FastAPILimiter, ws_default_callback
 from fastapi_limiter.depends import WebSocketRateLimiter
 from redis.asyncio import Redis
@@ -30,16 +30,16 @@ from starlette.websockets import WebSocket
 from typing_extensions import Annotated, Doc, Literal  # noqa
 
 from fastapi_channels.exceptions import (
+    ActionIsDeprecated,
+    ActionNotExist,
+    PermissionDenied,
     WebSocketException,
     WebSocketExceptionHandler,
-    PermissionDenied,
-    ActionNotExist,
-    ActionIsDeprecated,
 )
 from fastapi_channels.lifespan import ChannelLifespanEvent
 from fastapi_channels.metaclssses import ActionConsumerMeta
-from fastapi_channels.permission import BasePermission, AllowAny
-from fastapi_channels.types import Lifespan, DecoratedCallable
+from fastapi_channels.permission import AllowAny, BasePermission
+from fastapi_channels.types import Lifespan
 
 DEFAULT_QUERY_TOKEN_KEY = "token"
 DEFAULT_COOKIE_TOKEN_KEY = "token"
@@ -347,7 +347,7 @@ class BaseChannel:
         """接收信息"""
         async for message in websocket.iter_text():
             # Channel重写此处
-            async def _task():
+            async def _task(message=message):
                 if self.throttle_classes is not None:
                     await self.throttle_classes(websocket, channel)
                 await FastAPIChannel.broadcast.publish(channel=channel, message=message)
@@ -373,7 +373,9 @@ class BaseChannel:
         if action:
             # BaseChannel不对action做处理，你应该使用Channel类
             warnings.warn(
-                "BaseChannel class does not handle actions,You should use the Channel class."
+                "BaseChannel class does not handle actions,You should use the Channel class.",
+                category=Warning,
+                stacklevel=1,
             )
         return self.permission_classes
 
@@ -396,11 +398,10 @@ class BaseChannel:
         雾：不知道这个现在怎么改用
         """
         return [throttle() for throttle in self.throttle_classes]
-    
 
     async def check_permission_classes(self, websocket: WebSocket) -> None:
         """只检查permission_classes的权限认证"""
-        for permission in self.permission_classes:
+        for permission in await self.get_permissions(action=None):
             if (
                 await self._check_permission(
                     websocket=websocket, action=None, permission=permission
@@ -509,17 +510,19 @@ class Channel(BaseChannel, metaclass=ActionConsumerMeta):
         """接收信息"""
         async for message in websocket.iter_text():
             # Channel重写此处
-            async def _task():
+            async def _task(message=message):
                 if self.throttle_classes is not None:
                     await self.throttle_classes(websocket, channel)
                 data: dict = await self.decode(message)
-                await self.handle_action(
-                    action=data.get("action", None),
-                    request_id=int(data.get("request_id", 1)),
-                    data=data,
-                    websocket=websocket,
-                    channel=channel,
-                ),
+                (
+                    await self.handle_action(
+                        action=data.get("action", None),
+                        request_id=int(data.get("request_id", 1)),
+                        data=data,
+                        websocket=websocket,
+                        channel=channel,
+                    ),
+                )
 
             await self._handle_exception(_task(), websocket=websocket, channel=channel)
 
@@ -560,11 +563,11 @@ class Channel(BaseChannel, metaclass=ActionConsumerMeta):
             Optional[Sequence[Depends]],
             Doc(
                 """
-                        A list of dependencies (using `Depends()`) to be used for this Action.
-    
-                        Read more about it in the
-                        [FastAPI docs for Action](https://fastapi.tiangolo.com/advanced/websockets/).
-                        """
+                A list of dependencies (using `Depends()`) to be used for this Action.
+
+                Read more about it in the
+                [FastAPI docs for Action](https://fastapi.tiangolo.com/advanced/websockets/).
+                """
             ),
         ] = None,  # TODO: 以后改成我自己的文档地址，这里先不动
     ) -> DecoratedCallable:
