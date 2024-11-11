@@ -390,3 +390,4 @@ Serving at: http://127.0.0.1:8008
     * Search for such links in the translated document using the regex `#[^# ]`.
     * Search in all documents already translated into your language for `your-translated-document.md`. For example VS Code has an option "Edit" -> "Find in Files".
     * When translating a document, do not "pre-translate" `#hash-parts` that link to headings in untranslated documents.
+这里也翻译了，哈哈哈
