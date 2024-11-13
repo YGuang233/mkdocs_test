@@ -41,5 +41,3 @@ jobs:
           end_regex: '^## '
           debug_logs: true
           label_header_prefix: '## '
-#          label_header_prefix: '### '
-# 明天试一下添加版本，并把上面的改成下面三个#的那种，虽然github上现在就是，但是把·### Latest Changes`改成`## Latest Changes`
