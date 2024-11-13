@@ -9,16 +9,16 @@
   </a>
 </p>
 
-# Introduction
+## Introduction
 [【中文文档】](../README.md) [【English Doc】](./README_EN.md)
 
-&nbsp;&nbsp;This project mainly provides a fast and convenient processing and management library for Web Socket interface communication of Fast API. The feature lies in the ability to implement basic chat room functions with a small amount of code, and the writing style of FastAPI.
+&nbsp;&nbsp;This project mainly provides a fast and convenient extension library for the Web Socket interface communication of Fast API. The feature lies in the ability to implement basic chat room functions with a small amount of code, and the writing style of FastAPI.
 <br>
 &nbsp;&nbsp;This project has also integrated excellent third-party libraries such as [broadcaster](https://github.com/encode/broadcaster) and [FastAPI limiter](https://github.com/long2ice/fastapi-limiter), and has reserved custom locations for using these libraries in this project.
 <br>
 &nbsp;&nbsp;Generally, users only need to consider how to write 'actions' to achieve the transmission goals and the corresponding permission classes for accessing' actions' when using this library
 
-# Examples
+## Examples
 
 <img src="https://github.com/user-attachments/assets/593ba9c9-4b23-46bf-8697-bee953372010" alt='WebSockets Demo'>
 
@@ -248,7 +248,7 @@ if __name__ == "__main__":
 ```
 The HTML template for the front end [is available here](https://github.com/YGuang233/fastapi-channels/blob/master/example/templates/index.html), and is adapted from [Pieter Noordhuis's PUB/SUB demo](https://gist.github.com/pietern/348262) and [Tom Christie's Broadcaster demo](https://github.com/encode/broadcaster/blob/master/example/templates/index.html).
 
-# Goal and Achieve
+## Goal and Achieve
 
 - [x] Permission authentication
     - [x] Basic global and channel permission authentication
@@ -279,7 +279,7 @@ The HTML template for the front end [is available here](https://github.com/YGuan
 - [ ] Complete doc
 - [ ] FastAPI writing stylization (dependency injection...)
 
-# Installation
+## Installation
 
 So now it's up to you to use fastapi-channels
 ```shell

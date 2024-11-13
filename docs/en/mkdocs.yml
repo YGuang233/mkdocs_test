@@ -3,7 +3,7 @@ INHERIT: ../zh/mkdocs.yml
 extra:  # 实测是可以覆盖的 # 不过覆盖了同级别的就是全覆盖了，不是单独指定的,索性就这里比较短的
   analytics: 
     provider: google
-    property: G-RMREXXKJEQ # analytics4还是没搞清楚怎么使用 
+    property: G-RMREXXKJEQ
     feedback:
       title: Was this page helpful?
       ratings:

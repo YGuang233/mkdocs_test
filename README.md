@@ -9,16 +9,16 @@
   </a>
 </p>
 
-# 介绍
+## 介绍
 [【中文文档】](./README.md) [【English Doc】](./doc/README_EN.md)
 
-&nbsp;&nbsp;本项目主要为FastAPI的WebSocket接口通讯提供快捷方便的处理和管理库。特色在于少量代码就能实现基本的聊天室的功能,和fastapi的编写风格。
+&nbsp;&nbsp;本项目主要为FastAPI的WebSocket接口通讯提供快捷方便的扩展库。特色在于少量代码就能实现基本的聊天室的功能,和fastapi的编写风格。
 <br>
 &nbsp;&nbsp;本项目又集成了优秀的第三方库如:[broadcaster](https://github.com/encode/broadcaster)、[fastapi-limiter](https://github.com/long2ice/fastapi-limiter)。在本项目均保留了自定义使用这些库的位置。
 <br>
 &nbsp;&nbsp;一般的，用户使用本库仅需考虑如何编写 `action` 来实现传输的目标,和对应的`action`访问的权限类即可
 
-# 案例演示
+## 案例演示
 
 <img src="https://github.com/user-attachments/assets/593ba9c9-4b23-46bf-8697-bee953372010" alt='WebSockets Demo'>
 
@@ -239,7 +239,10 @@ if __name__ == "__main__":
 ```
 前端的HTML模板[可在此处获得](https://github.com/YGuang233/fastapi-channels/blob/master/example/templates/index.html)，改编自[Pieter Noordhuis的PUB/SUB演示](https://gist.github.com/pietern/348262)和[Tom Christie的Broadcaster演示](https://github.com/encode/broadcaster/blob/master/example/templates/index.html)
 
-# 目标和实现
+教程 - 用户指南 中有包含更多特性的更完整示例。
+<a href="https://fc.bxzdyg.com/zh/tutorial/">教程 - 用户指南</a> 中有包含更多特性的更完整示例。
+
+## 目标和实现
 
 - [x] 权限认证
     - [x] 基础全局、频道权限认证
@@ -270,9 +273,13 @@ if __name__ == "__main__":
 - [ ] 完善的doc
 - [ ] fastapi编写风格化(依赖项注入...)
 
-# 安装
+## 安装
 
 那么接下来就由你来使用fastapi-channels了
 ```shell
 pip install fastapi-channels
 ```
+
+## 许可协议
+
+该项目遵循 MIT 许可协议。

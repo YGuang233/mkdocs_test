@@ -1,6 +1,6 @@
 # 开发 - 贡献
 
-首先，你可能想了解 [帮助 FastAPI 及获取帮助](help-fastapi.md){.internal-link target=_blank}的基本方式。
+首先，你可能想了解 [帮助 FastAPI-Channels 及获取帮助](./resources/help-fastapi-channels.md){.internal-link target=_blank}的基本方式。
 
 ## 开发
 
@@ -24,73 +24,62 @@ $ python -m venv env
 
 使用以下方法激活新环境：
 
-//// tab | Linux, macOS
+=== "Linux, macOS"
+    <div class="termy">
 
-<div class="termy">
+    ```console
+    $ source ./env/bin/activate
+    ```
 
-```console
-$ source ./env/bin/activate
-```
+    </div>
 
-</div>
+=== "Windows PowerShell"
 
-////
+    <div class="termy">
+    
+    ```console
+    $ .\env\Scripts\activate.ps1
+    ```
+    
+    </div>
 
-//// tab | Windows PowerShell
+=== "Windows Bash"
 
-<div class="termy">
-
-```console
-$ .\env\Scripts\Activate.ps1
-```
-
-</div>
-
-////
-
-//// tab | Windows Bash
-
-Or if you use Bash for Windows (e.g. <a href="https://gitforwindows.org/" class="external-link" target="_blank">Git Bash</a>):
-
-<div class="termy">
-
-```console
-$ source ./env/Scripts/activate
-```
-
-</div>
-
-////
+    Or if you use Bash for Windows (e.g. <a href="https://gitforwindows.org/" class="external-link" target="_blank">Git Bash</a>):
+    <div class="termy">
+    
+    ```console
+    $ source ./env/Scripts/activate
+    ```
+    
+    </div>
 
 要检查操作是否成功，运行：
 
-//// tab | Linux, macOS, Windows Bash
+===! "Linux, macOS"
 
-<div class="termy">
+    <div class="termy">
+    
+    ```console
+    $ which pip
+    
+    some/directory/fastapi-channels/env/bin/pip
+    ```
+    
+    </div>
 
-```console
-$ which pip
+=== "Windows PowerShell,Bash"
 
-some/directory/fastapi/env/bin/pip
-```
+    <div class="termy">
+    
+    ```console
+    $ Get-Command pip
+    
+    some/directory/fastapi-channels/env/bin/pip
+    ```
 
-</div>
+    </div>
 
-////
-
-//// tab | Windows PowerShell
-
-<div class="termy">
-
-```console
-$ Get-Command pip
-
-some/directory/fastapi/env/bin/pip
-```
-
-</div>
-
-////
 
 如果显示 `pip` 程序文件位于 `env/bin/pip` 则说明激活成功。 🎉
 
@@ -106,13 +95,12 @@ $ python -m pip install --upgrade pip
 
 </div>
 
-/// tip
+!!! tip
 
-每一次你在该环境下使用 `pip` 安装了新软件包时，请再次激活该环境。
+    每一次你在该环境下使用 `pip` 安装了新软件包时，请再次激活该环境。
+    
+    这样可以确保你在使用由该软件包安装的终端程序时使用的是当前虚拟环境中的程序，而不是其他的可能是全局安装的程序。
 
-这样可以确保你在使用由该软件包安装的终端程序时使用的是当前虚拟环境中的程序，而不是其他的可能是全局安装的程序。
-
-///
 
 ### pip
 
@@ -128,23 +116,22 @@ $ pip install -r requirements.txt
 
 </div>
 
-这将在虚拟环境中安装所有依赖和本地版本的 FastAPI。
+这将在虚拟环境中安装所有依赖和本地版本的 FastAPI-Channels。
 
-#### 使用本地 FastAPI
+#### 使用本地 FastAPI-Channels
 
-如果你创建一个导入并使用 FastAPI 的 Python 文件，然后使用虚拟环境中的 Python 运行它，它将使用你本地的 FastAPI 源码。
+如果你创建一个导入并使用 FastAPI-Channels 的 Python 文件，然后使用虚拟环境中的 Python 运行它，它将使用你本地的 FastAPI-Channels 源码。
 
-并且如果你更改该本地 FastAPI 的源码，由于它是通过 `-e` 安装的，当你再次运行那个 Python 文件，它将使用你刚刚编辑过的最新版本的 FastAPI。
+并且如果你更改该本地 FastAPI-Channels 的源码，由于它是通过 `-e` 安装的，当你再次运行那个 Python 文件，它将使用你刚刚编辑过的最新版本的 FastAPI-Channels。
 
 这样，你不必再去重新"安装"你的本地版本即可测试所有更改。
 
-/// note | "技术细节"
+??? note "技术细节"
 
-仅当你使用此项目中的 `requirements.txt` 安装而不是直接使用 `pip install fastapi` 安装时，才会发生这种情况。
+    仅当你使用此项目中的 `requirements.txt` 安装而不是直接使用 `pip install fastapi` 安装时，才会发生这种情况。
+    
+    这是因为在 `requirements.txt` 中，本地的 FastAPI-Channels 是使用“可编辑” （`-e`）选项安装的
 
-这是因为在 `requirements.txt` 中，本地的 FastAPI 是使用“可编辑” （`-e`）选项安装的
-
-///
 
 ### 格式化
 
@@ -160,7 +147,7 @@ $ bash scripts/format.sh
 
 它还会自动对所有导入代码进行排序整理。
 
-为了使整理正确进行，你需要在当前环境中安装本地的 FastAPI，即在运行上述段落中的命令时添加 `-e`。
+为了使整理正确进行，你需要在当前环境中安装本地的 FastAPI-Channels，即在运行上述段落中的命令时添加 `-e`。
 
 ## 文档
 
@@ -186,23 +173,22 @@ $ python ./scripts/docs.py live
 
 这样，你可以编辑文档 / 源文件并实时查看更改。
 
-/// tip
+??? tip
 
-或者你也可以手动执行和该脚本一样的操作
+    或者你也可以手动执行和该脚本一样的操作
+    
+    进入语言目录，如果是英文文档，目录则是 `docs/en/`:
+    
+    ```console
+    $ cd docs/en/
+    ```
+    
+    在该目录执行 `mkdocs` 命令
+    
+    ```console
+    $ mkdocs serve --dev-addr 8008
+    ```
 
-进入语言目录，如果是英文文档，目录则是 `docs/en/`:
-
-```console
-$ cd docs/en/
-```
-
-在该目录执行 `mkdocs` 命令
-
-```console
-$ mkdocs serve --dev-addr 8008
-```
-
-///
 
 #### Typer CLI （可选）
 
@@ -229,11 +215,11 @@ Completion will take effect once you restart the terminal.
 
 在 `./scripts/docs.py` 中还有额外工具 / 脚本来处理翻译。
 
-/// tip
+??? tip
 
-你不需要去了解 `./scripts/docs.py` 中的代码，只需在命令行中使用它即可。
+    你不需要去了解 `./scripts/docs.py` 中的代码，只需在命令行中使用它即可。
 
-///
+
 
 所有文档均在 `./docs/en/` 目录中以 Markdown 文件格式保存。
 
@@ -276,25 +262,24 @@ $ uvicorn tutorial001:app --reload
 
 #### 建议和指南
 
-* 在当前 <a href="https://github.com/fastapi/fastapi/pulls" class="external-link" target="_blank">已有的 pull requests</a> 中查找你使用的语言，添加要求修改或同意合并的评审意见。
+* 在当前 <a href="https://github.com/YGuang233/fastapi-channels/pulls" class="external-link" target="_blank">已有的 pull requests</a> 中查找你使用的语言，添加要求修改或同意合并的评审意见。
 
-/// tip
+??? tip
 
-你可以为已有的 pull requests <a href="https://help.github.com/en/github/collaborating-with-issues-and-pull-requests/commenting-on-a-pull-request" class="external-link" target="_blank">添加包含修改建议的评论</a>。
+    你可以为已有的 pull requests <a href="https://help.github.com/en/github/collaborating-with-issues-and-pull-requests/commenting-on-a-pull-request" class="external-link" target="_blank">添加包含修改建议的评论</a>。
+    
+    详情可查看关于 <a href="https://help.github.com/en/github/collaborating-with-issues-and-pull-requests/about-pull-request-reviews" class="external-link" target="_blank">添加 pull request 评审意见</a> 以同意合并或要求修改的文档。
 
-详情可查看关于 <a href="https://help.github.com/en/github/collaborating-with-issues-and-pull-requests/about-pull-request-reviews" class="external-link" target="_blank">添加 pull request 评审意见</a> 以同意合并或要求修改的文档。
 
-///
-
-* 检查在 <a href="https://github.com/fastapi/fastapi/discussions/categories/translations" class="external-link" target="_blank">GitHub Discussion</a> 是否有关于你所用语言的协作翻译。 如果有，你可以订阅它，当有一条新的 PR 请求需要评审时，系统会自动将其添加到讨论中，你也会收到对应的推送。
+* 检查在 <a href="https://github.com/YGuang233/fastapi-channels/discussions/categories/translations" class="external-link" target="_blank">GitHub Discussion</a> 是否有关于你所用语言的协作翻译。 如果有，你可以订阅它，当有一条新的 PR 请求需要评审时，系统会自动将其添加到讨论中，你也会收到对应的推送。
 
 * 每翻译一个页面新增一个 pull request。这将使其他人更容易对其进行评审。
 
-对于我（译注：作者使用西班牙语和英语）不懂的语言，我将在等待其他人评审翻译之后将其合并。
+对于我（译注：作者使用繁体中文和英语）不懂的语言，我将在等待其他人评审翻译之后将其合并。
 
 * 你还可以查看是否有你所用语言的翻译，并对其进行评审，这将帮助我了解翻译是否正确以及能否将其合并。
-    * 可以在 <a href="https://github.com/fastapi/fastapi/discussions/categories/translations" class="external-link" target="_blank">GitHub Discussions</a> 中查看。
-    * 也可以在现有 PR 中通过你使用的语言标签来筛选对应的 PR，举个例子，对于西班牙语，标签是 <a href="https://github.com/fastapi/fastapi/pulls?q=is%3Apr+is%3Aopen+sort%3Aupdated-desc+label%3Alang-es+label%3A%22awaiting+review%22" class="external-link" target="_blank">`lang-es`</a>。
+    * 可以在 <a href="https://github.com/YGuang233/fastapi-channels/discussions/categories/translations" class="external-link" target="_blank">GitHub Discussions</a> 中查看。
+    * 也可以在现有 PR 中通过你使用的语言标签来筛选对应的 PR，举个例子，对于繁体中文，标签是 <a href="https://github.com/YGuang233/fastapi-channels/pulls?q=is%3Apr+is%3Aopen+sort%3Aupdated-desc+label%3Alang-es+label%3A%22awaiting+review%22" class="external-link" target="_blank">`lang-es`</a>。
 
 * 请使用相同的 Python 示例，且只需翻译文档中的文本，不用修改其它东西。
 
@@ -304,17 +289,16 @@ $ uvicorn tutorial001:app --reload
 
 #### 已有的语言
 
-假设你想将某个页面翻译成已经翻译了一些页面的语言，例如西班牙语。
+假设你想将某个页面翻译成已经翻译了一些页面的语言，例如繁体中文。
 
-对于西班牙语来说，它的两位字母代码是 `es`。所以西班牙语翻译的目录位于 `docs/es/`。
+对于繁体中文来说，它的字母代码是 `zh-hant`。所以繁体中文翻译的目录位于 `docs/zh-hant/`。
 
-/// tip
+??? tip
 
-默认语言是英语，位于 `docs/en/`目录。
+    默认语言是中文:material-information-outline:{ title="为什么是中文？一是英语太差了，基本上都是机翻，二是我也就勉强处理好中文的文档" }，位于 `docs/zh/`目录。
 
-///
 
-现在为西班牙语文档运行实时服务器：
+现在为繁体中文文档运行实时服务器：
 
 <div class="termy">
 
@@ -329,47 +313,45 @@ $ python ./scripts/docs.py live es
 
 </div>
 
-/// tip
+??? tip
 
-或者你也可以手动执行和该脚本一样的操作
+    或者你也可以手动执行和该脚本一样的操作
+    
+    进入语言目录，对于繁体中文的翻译，目录是 `docs/es/`:
+    
+    ```console
+    $ cd docs/es/
+    ```
+    
+    在该目录执行 `mkdocs` 命令
+    
+    ```console
+    $ mkdocs serve --dev-addr 8008
+    ```
 
-进入语言目录，对于西班牙语的翻译，目录是 `docs/es/`:
-
-```console
-$ cd docs/es/
-```
-
-在该目录执行 `mkdocs` 命令
-
-```console
-$ mkdocs serve --dev-addr 8008
-```
-
-///
 
 现在你可以访问 <a href="http://127.0.0.1:8008" class="external-link" target="_blank">http://127.0.0.1:8008</a> 实时查看你所做的更改。
 
-如果你查看 FastAPI 的线上文档网站，会看到每种语言都有所有的文档页面，但是某些页面并未被翻译并且会有一处关于缺少翻译的提示。（但是当你像上面这样在本地运行文档时，你只会看到已经翻译的页面。）
+如果你查看 FastAPI-Channels 的线上文档网站，会看到每种语言都有所有的文档页面，但是某些页面并未被翻译并且会有一处关于缺少翻译的提示。（但是当你像上面这样在本地运行文档时，你只会看到已经翻译的页面。）
 
 现在假设你要为 [Features](features.md){.internal-link target=_blank} 章节添加翻译。
 
 * 复制下面的文件：
 
 ```
-docs/en/docs/features.md
+docs/zh/docs/features.md
 ```
 
 * 粘贴到你想要翻译语言目录的相同位置，比如：
 
 ```
-docs/es/docs/features.md
+docs/en/docs/features.md
 ```
 
-/// tip
+??? tip
 
-注意路径和文件名的唯一变化是语言代码，从 `en` 更改为 `es`。
+    注意路径和文件名的唯一变化是语言代码，从 `zh` 更改为 `en`。
 
-///
 
 回到浏览器你就可以看到刚刚更新的章节了。🎉
 
@@ -401,20 +383,20 @@ Successfully initialized: docs/ht
 这条命令会生成一个从 `en` 版本继承了所有属性的配置文件 `docs/ht/mkdocs.yml`:
 
 ```yaml
-INHERIT: ../en/mkdocs.yml
+INHERIT: ../zh/mkdocs.yml
 ```
 
-/// tip
+??? tip
 
-你也可以自己手动创建包含这些内容的文件。
-
-///
+    你也可以自己手动创建包含这些内容的文件。
 
 这条命令还会生成一个文档主页 `docs/ht/index.md`，你可以从这个文件开始翻译。
 
 然后，你可以根据上面的"已有语言"的指引继续进行翻译。
 
 翻译完成后，你就可以用 `docs/ht/mkdocs.yml` 和 `docs/ht/index.md` 发起 PR 了。🎉
+
+提交PR前请阅读这个[页面](./resources/management-tasks.md)，它会增加你提交的PR合并率
 
 #### 预览结果
 
@@ -430,9 +412,9 @@ INHERIT: ../en/mkdocs.yml
 // Use the command "build-all", this will take a bit
 $ python ./scripts/docs.py build-all
 
+Building docs for: zh
 Building docs for: en
-Building docs for: es
-Successfully built docs for: es
+Successfully built docs for: en
 ```
 
 </div>

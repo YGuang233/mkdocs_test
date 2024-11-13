@@ -21,7 +21,7 @@ description = "This project provides a simple setup for creating WebSocket commu
 readme = "README.md"
 requires-python = ">=3.8"
 authors = [
-    { name = "宋建波", email = "banxingzhedeyangguang@gmail.com" },
+    { name = "BXZDYG", email = "banxingzhedeyangguang@gmail.com" },
 ]
 keywords = ["fastapi", "broadcaster", "pydantic", 'fastapi-channels']
 classifiers = [

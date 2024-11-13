@@ -227,7 +227,11 @@ def build_all() -> None:
     shutil.rmtree(site_path, ignore_errors=True)
     langs = [lang.name for lang in get_lang_paths() if lang.is_dir()]
     cpu_count = os.cpu_count() or 1
-    process_pool_size = cpu_count * 4
+    # Windows has a limit of 64 handles for WaitForMultipleObjects
+    # But my local Windows is usually smaller than this value
+    # Reduce pool size further to avoid hitting the handle limit
+    max_pool_size = 60 if os.name == 'nt' else cpu_count * 4
+    process_pool_size = min(cpu_count * 4, max_pool_size)
     typer.echo(f"Using process pool size: {process_pool_size}")
     with Pool(process_pool_size) as p:
         p.map(build_lang, langs)
