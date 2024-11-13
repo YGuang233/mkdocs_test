@@ -1,12 +1,12 @@
 # Repository Management Tasks
 
-These are the tasks that can be performed to manage the FastAPI repository by [team members](./fastapi-people.md#team){.internal-link target=_blank}.
+These are the tasks that can be performed to manage the FastAPI repository by [team members](../dev-people.md#team){.internal-link target=_blank}.
 
 !!! tip
     This section is useful only to a handful of people, team members with permissions to manage the repository. You can probably skip it. 😉
 
 
-...so, you are a [team member of FastAPI](./fastapi-people.md#team){.internal-link target=_blank}? Wow, you are so cool! 😎
+[//]: # (...so, you are a [team member of FastAPI-Channels]&#40;../dev-people.md#team&#41;{.internal-link target=_blank}? Wow, you are so cool! 😎)
 
 You can help with everything on [Help FastAPI-Channels - Get Help](./help-fastapi-channels.md){.internal-link target=_blank} the same ways as external contributors. But additionally, there are some tasks that only you (as part of the team) can perform.
 
